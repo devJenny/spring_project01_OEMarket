@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- MemberMapper 인터페이스의 경로 지정 / 네임스페이스는 XML Mapper의 SQL 쿼리 문과 Mapper 인터페이스의 메서드를 매핑하기 위해 지정하는 속성 -->
+<mapper namespace="com.OEMarket.mapper.MemberMapper">
+
+<sql id="memberColumns">
+          "user_no" <!-- 회원 번호(pk) -->
+        , "email" <!-- 이메일 -->
+        , "password" <!-- 비밀번호 -->
+        , "name" <!-- 이름 -->
+        , "nickname" <!-- 닉네임 -->
+        , "gender" <!-- 성별 -->
+        , "phone" <!-- 전화번호 -->
+        , "user_icon" <!-- 회원 아이콘 -->
+        , "signup_date" <!-- 가입일 -->
+        , "signout_yn" <!-- 탈퇴 여부 -->
+        , "signout_date" <!-- 탈퇴일 -->
+        , "member_role" <!-- 회원구분 -->
+</sql>
+
+<!-- 회원 가입 -->
+<insert id="insertMember" parameterType="MemberDTO">
+    INSERT INTO MEMBER(
+        <include refid="memberColumns" />
+    )VALUES (
+        member_id_seq.nextval
+        , #{email}
+        , #{password}
+        , #{name}
+        , #{nickname}
+        , #{gender}
+        , #{phone}
+        , #{userIcon}
+        , sysdate
+        , 'N'
+        , NULL
+        , 'USER'
+      
+    )
+</insert>
+
+<!-- 이메일 중복 체크 -->
+<select id="emailCheck" parameterType="MemberDTO" resultType="int">
+    SELECT COUNT(*)
+    FROM MEMBER
+    WHERE "email" = #{email}
+</select>
+
+<!-- 닉네임 중복 체크 -->
+<select id="nickCheck" parameterType="MemberDTO" resultType="int">
+    SELECT COUNT(*)
+    FROM MEMBER
+    WHERE "nickname" = #{nickname}
+</select>
+
+
+
+</mapper>

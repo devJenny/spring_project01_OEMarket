@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="common/layout/defaultLayout">
+
+<!--  
+ * 공지사항 목록
+ * 2021. 12. 17.
+ * Jenny (devje@naver.com)
+ -->
+
+<!-- 타이틀 -->
+<th:block layout:fragment="title">
+	<title>공지사항 목록</title>
+</th:block>
+
+
+</body>
+
+<!-- 검색 영역 -->
+<!-- 
+<th:block layout:fragment="search">
+	<form action="#" id="searchform-header" class="searchform js__toggle active pull-right">
+		<input type="search" placeholder="Search..." class="input-search">
+		<button class="mdi mdi-magnify button-search" type="submit">
+			<i class="fa fa-search" aria-hidden="true"></i>
+		</button>
+	</form>
+</th:block>  -->
+
+<th:block layout:fragment="content">
+	<div class="container table-responsive clearfix py-5 px-4 px-lg-5 mt-5">
+		<!-- 제목 -->
+		<h2>공지사항</h2>
+
+		<!-- 목록 제목 -->
+		<table class="table">
+			<thead align=center>
+				<tr>
+					<th>공지</th>
+					<th>제목</th>
+					<th>작성자</th>
+					<th>등록일</th>
+					<th>조회수</th>
+				</tr>
+			</thead>
+
+			<!-- 목록 내용 -->
+			<tbody align=center>
+				<tr th:if="${not #lists.isEmpty( noticeList )}" th:each="row : ${noticeList}">
+					<td th:text="공지"></td>
+					<td class="text-left">
+						<a class="boardListCss" th:href="@{view.do( boardNo=${row.boardNo} )}" th:text="${row.title}"></a>
+					</td>
+					<!-- <td th:text="${row.userNo}"></td> -->
+					<td>관리자</td>
+					<!-- <td th:text="${#temporals.format( row.writeDate, 'yyyy-MM-dd' )}"></td> -- 오류 해결 https://gigas-blog.tistory.com/132 -->
+					<td th:text="${#dates.format(row.writeDate, 'yyyy-MM-dd')}"></td>
+					<td th:text="${row.viewCount}"></td>
+				</tr>
+				<tr th:unless="${not #lists.isEmpty( noticeList )}">
+					<td colspan="5">조회된 결과가 없습니다.</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<!-- 글쓰기 버튼 -->
+		<div class="d-grid gap-2 d-lg-flex justify-content-lg-end" th:unless="${session.loginMember == null}">
+			<a th:href="@{write.do}" class="btn btn-success waves-effect waves-right">글쓰기</a>
+		</div>
+
+		<!-- 페이징 처리 시작 -->
+		<th:block layout:fragment="paging">
+			<nav aria-label="Page navigation example">
+				<ul class="pagination justify-content-center">
+					<li class="page-item disabled">
+						<a class="page-link">이전</a>
+					</li>
+					<li class="page-item">
+						<a class="page-link" href="#">1</a>
+					</li>
+					<li class="page-item">
+						<a class="page-link" href="#">2</a>
+					</li>
+					<li class="page-item">
+						<a class="page-link" href="#">3</a>
+					</li>
+					<li class="page-item">
+						<a class="page-link" href="#">다음</a>
+					</li>
+				</ul>
+			</nav>
+		</th:block>
+		<!-- 페이징 처리 끝 -->
+	</div>
+</th:block>
+</body>
+</html>

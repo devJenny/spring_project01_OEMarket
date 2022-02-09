@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<!--  
+ * 게시판 신고하기 버튼 클릭 후, close 처리
+ * 2021. 12. 18.
+ * Jenny (devje@naver.com)
+ -->
+
+<head th:replace="common/fragments/header :: header">
+
+<!-- 타이틀 -->
+<th:block layout:fragment="title">
+	<title>게시물 신고 완료</title>
+</th:block>
+</head>
+
+<body>
+	<th:block layout:fragment="content">
+		<section class="card-content container">
+			<input type="hidden" id="alertStart">
+		</section>
+	</th:block>
+	
+	<!-- 스크립트 추가 -->
+	<div th:replace="common/fragments/script :: script" />
+	<th:block layout:fragment="add-script">
+		<script th:inline="javascript">
+			/*<![CDATA[*/
+
+			$().ready(function() {
+				$("#alertStart").click(function() {
+					Swal.fire({
+						icon : 'success',
+						title : '창 닫기',
+						text : '창 닫기',
+					});
+				});
+				window.close();
+			});
+
+			/*[- end of function -]*/
+
+			/*]]>*/
+		</script>
+	</th:block>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<!--  
+ * 게시판 신고
+ * 2021. 12. 18.
+ * Jenny (devje@naver.com)
+ -->
+
+<head th:replace="common/fragments/header :: header">
+
+<th:block layout:fragment="title">
+	<title>게시물 신고</title>
+</th:block>
+</head>
+<!-- 타이틀 -->
+
+
+<body>
+	<th:block layout:fragment="content">
+		<section class="card-content container">
+
+			<div>
+				<br>
+				<h2>게시물 신고</h2>
+			</div>
+			<form lass="form-horizontal" th:action="@{/reported/boardReportedRegister.do}" th:object="${boardReported}" method="post" onsubmit="return registerBoardReported(this)">
+
+				<input type="hidden" th:if="*{reportedNo != null and reportedNo > 0}" th:field="*{reportedNo}" />
+				<input type="hidden" th:field="*{boardNo}" />
+
+				<!-- 작성자 -->
+				<div class="mb-3">
+					<type="hidden" for="userNo" class="form-label"><b></b></label>
+					<input type="hidden" id="userNo" name="userNo" th:value="${session.loginMember.userNo}" class="form-control" readonly />
+				</div>
+
+				<!-- 사유 선택 시작 -->
+				<div class="mb-3 form-group">
+					<label for="content" class="col-sm-2 control-label"><b>사유 선택</b> <small>(여러 사유에 해당될 경우, 대표적인 사유 1개를 선택해주세요)</small> </label>
+					<div class="form-check">
+						<input type="radio" class="form-check-input" id="radio1" th:field="*{content}" name="*{content}" value="원치 않는 상업성 콘텐츠 또는 스팸" checked>
+						원치 않는 상업성 콘텐츠 또는 스팸 <label class="form-check-label" for="*{content}"></label>
+					</div>
+
+					<div class="form-check">
+						<input type="radio" class="form-check-input" id="radio2" th:field="*{content}" name="*{content}" value="욕설 및 비방">
+						욕설 및 비방 <label class="form-check-label" for="*{content}"></label>
+					</div>
+
+					<div class="form-check">
+						<input type="radio" class="form-check-input" id="radio2" th:field="*{content}" name="*{content}" value="희롱 또는 괴롭힘">
+						희롱 또는 괴롭힘 <label class="form-check-label" for="*{content}"></label>
+					</div>
+
+					<div class="form-check">
+						<input type="radio" class="form-check-input" id="radio2" th:field="*{content}" name="*{content}" value="음란성 또는 청소년에게 부적합한 내용">
+						음란성 또는 청소년에게 부적합한 내용 <label class="form-check-label" for="*{content}"></label>
+					</div>
+				</div>
+				<!-- 사유 선택 끝 -->
+
+				<!-- 신고하기 버튼 후 alert 처리 -->
+				<div class="btn_wrap text-center">
+					<button type="submit" class="btn btn-success waves-effect waves-light" onClick="alert('신고되었습니다')">신고하기</button>
+				</div>
+			</form>
+		</section>
+	</th:block>
+
+	<!-- 스크립트 추가 -->
+	<div th:replace="common/fragments/script :: script" />
+	<th:block layout:fragment="add-script">
+		<script th:inline="javascript">
+			/*<![CDATA[*/
+
+			function registerBoardReported(form) {
+
+				var result = (isValid(form.userNo, "작성자", null, null) && isValid(
+						form.content, "내용", null, null));
+
+				if (result == false) {
+					return false;
+				}
+			}
+			
+			
+
+			/*[- end of function -]*/
+
+			/*]]>*/
+		</script>
+	</th:block>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- * 게시판 * 2021. 12. 14. * Jenny (secrethappy@naver.com) -->
+
+<!-- BoardMapper 인터페이스의 경로 지정 / 네임스페이스는 XML Mapper의 SQL 쿼리 문과 Mapper 인터페이스의 
+	메서드를 매핑하기 위해 지정하는 속성 -->
+<mapper namespace="com.OEMarket.mapper.BoardMapper">
+
+	<!-- <sql> 태그를 이용해서 태그의 시작과 끝 사이에 공통으로 사용되거나 반복적으로 사용되는 SQL 조각을 정의할 수 있음 -->
+	<sql id="boardColumns">
+		"board_no" <!-- 게시글 번호 -->
+		, "user_no" <!-- 작성자 -->
+		, "title" <!-- 제목 -->
+		, "category_no" <!-- 카테고리 번호 -->
+		, "sales_status" <!-- 판매 상태 -->
+		, "price" <!-- 판매금액 -->
+		, "content" <!-- 내용 -->
+		, "view_count" <!-- 조회수 -->
+		, "write_date" <!-- 등록일 -->
+		, "modify_date" <!-- 수정일 -->
+		, "modifier" <!-- 수정자 -->
+		, "delete_yn" <!-- 삭제여부 -->
+		, "notice_yn" <!-- 공지사항여부 -->
+	</sql>
+
+	<sql id="boardColumnsTwo">
+		b.*
+		,m."nickname"
+		,m."member_role"
+	</sql>
+
+	<resultMap type="BoardDTO" id="BoardMap">
+		<id column="board_no" property="boardNo" />
+		<result column="user_no" property="userNo" />
+		<result column="title" property="title" />
+		<result column="category_no" property="categoryNo" />
+		<result column="sales_status" property="salesStatus" />
+		<result column="price" property="price" />
+		<result column="content" property="content" />
+		<result column="view_count" property="viewCount" />
+		<result column="write_date" property="writeDate" />
+		<result column="modify_date" property="modifyDate" />
+		<result column="modifier" property="modifier" />
+		<result column="delete_yn" property="deleteYn" />
+		<result column="notice_yn" property="noticeYn" />
+
+		<association javaType="MemberDTO" property="memberDTO">
+			<id column="user_no" property="userNo" />
+			<result column="nickname" property="nickname" />
+			<result column="member_role" property="memberRole" />
+		</association>
+	</resultMap>
+
+	<insert id="insertBoard" parameterType="BoardDTO">
+		INSERT INTO BOARD (
+		<include refid="boardColumns" />
+
+		) VALUES (
+		board_no_seq.nextval
+		, #{userNo}
+		, #{title}
+		, #{categoryNo}
+		, 0
+		, #{price}
+		, #{content}
+		, 0
+		, sysdate
+		, NULL
+		, NULL
+		, 'N'
+		, 'N'
+
+		)
+	</insert>
+	
+	<select id="selectBoardDetail" parameterType="long"
+		resultMap="BoardMap">
+		SELECT
+		<include refid="boardColumnsTwo" />
+		, a."save_name"
+		
+		FROM
+		"BOARD" b
+
+		LEFT JOIN
+		"MEMBER" m
+
+		ON b."user_no" = m."user_no"
+		
+		inner join
+		"ATTACH" a
+		
+		on b."board_no" = a."board_no"
+		
+
+		WHERE
+		b."delete_yn" = 'N'
+		AND
+		b."board_no" = #{boardNo}
+	</select>
+
+	<update id="updateBoard" parameterType="BoardDTO">
+		UPDATE BOARD
+		SET
+		"title" = #{title}
+		, "price" = #{price}
+		, "content" = #{content}
+		, "modify_date" = sysdate
+		, "modifier" = #{modifier}
+		, "notice_yn" = nvl(#{noticeYn}, 'N')
+		WHERE
+		"board_no" = #{boardNo}
+	</update>
+
+	<update id="deleteBoard" parameterType="long">
+		UPDATE BOARD
+		SET
+		"delete_yn" = 'Y'
+		WHERE
+		"board_no" = #{boardNo}
+	</update>
+
+	<select id="selectBoardList" parameterType="BoardDTO"
+		resultType="BoardDTO">
+		SELECT * FROM (
+			SELECT ROW_NUMBER() OVER (ORDER BY b."board_no" DESC) r, 
+			b.*, 
+			a."save_name"
+			FROM "BOARD" b
+			INNER JOIN "ATTACH" a
+			ON b."board_no" = a."board_no"
+			WHERE b."delete_yn" = 'N' AND b."notice_yn" = 'N'
+			ORDER BY b."board_no" DESC, b."write_date" DESC, b."view_count" DESC
+		) WHERE r BETWEEN #{paginationInfo.firstRecordIndex} AND #{paginationInfo.lastRecordIndex}
+	</select>
+
+	<!-- <select id="selectBoardList" parameterType="BoardDTO"
+		resultType="BoardDTO">
+		SELECT
+		b.*
+		, a."save_name"
+		
+		FROM
+		"BOARD" b
+		
+		inner join
+		"ATTACH" a
+		
+		on b."board_no" = a."board_no"
+		
+		WHERE
+		b."delete_yn" = 'N'
+		AND
+		b."notice_yn" = 'N'
+		ORDER BY
+		b."board_no" DESC,
+		b."write_date" DESC,
+		b."view_count" DESC
+	</select> -->
+
+	<select id="selectBoardTotalCount" parameterType="BoardDTO"
+		resultType="int">
+		SELECT
+		COUNT(*)
+		
+		FROM
+		"BOARD" b
+		
+		INNER JOIN
+		"ATTACH" a
+		
+		ON b."board_no"  = a."board_no"
+		
+		WHERE
+		b."delete_yn" = 'N'
+		AND
+		b."notice_yn" = 'N'
+
+	</select>
+
+</mapper>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" layout:decorate="common/layout/defaultLayout">
+
+<!-- 타이틀 -->
+<th:block layout:fragment="title">
+	<title>회원가입</title>
+</th:block>
+
+
+<body>
+	<!-- 콘텐츠 시작 -->
+	<th:block layout:fragment="content">
+		<section class="h-100">
+			<div class="container h-100">
+				<div class="row justify-content-sm-center h-100">
+					<div class="col-xxl-4 col-xl-5 col-lg-5 col-md-7 col-sm-9">
+						<div class="card shadow-lg">
+							<div class="card-body p-5">
+								<h1 class="fs-4 card-title fw-bold mb-4">회원가입</h1>
+								<!-- start form tag -->
+								<form role="form" method="POST" class="needs-validation" autocomplete="off">
+									<div class="mb-3">
+										<label class="mb-2 text-muted" for="email">이메일</label>
+										<input id="email" type="email" class="form-control" name="email" onchange="checkEmail()" placeholder="이메일을 입력해주세요" required autofocus>
+										<br>
+										<button type="button" class="btn btn-success" id="emailCheck" onclick="fn_emailCheck()">중복체크</button>
+										<button type="button" class="btn btn-success" onclick="">이메일 인증</button>
+										<div class="invalid-feedback">Email is invalid</div>
+									</div>
+									
+									<!-- 비밀번호 -->
+									<div class="mb-3">
+										<label class="mb-2 text-muted" for="password">비밀번호</label>
+										<input id="password" type="password" class="form-control" name="password" onchange="checkPassword()" placeholder="비밀번호를 입력해주세요" required>
+										<div class="invalid-feedback">Password is required</div>
+									</div>
+
+									<!-- 비밀번호 재입력 -->
+									<div class="mb-3">
+										<label class="mb-2 text-muted" for="password2">비밀번호 확인</label>
+										<input id="password2" type="password" class="form-control" name="password2" onchange="comparePassword()" placeholder="비밀번호를 재입력해주세요" required>
+										<div class="invalid-feedback">Password is required</div>
+									</div>
+
+									<!-- 이름 -->
+									<div class="mb-3">
+										<label class="mb-2 text-muted" for="name">이름</label>
+										<input id="name" type="text" class="form-control" name="name" placeholder="이름을 입력해주세요" required >
+										<div class="invalid-feedback">Name is required</div>
+									</div>
+									
+									<!-- 닉네임 -->
+									<div class="mb-3">
+										<label class="mb-2 text-muted" for="nickname">닉네임</label>
+										<input id="nickname" type="text" class="form-control" name="nickname" placeholder="닉네임을 입력해주세요" required >
+										<br>
+                                        <button type="button" class="btn btn-success" id="nickCheck" onclick="fn_nickCheck()">중복체크</button>
+										<div class="invalid-feedback">Nickname is required</div>
+									</div>
+									
+									<!-- 전화번호 -->
+									<div class="mb-3">
+										<label class="mb-2 text-muted" for="phone">전화번호</label>
+										<input id="phone" type="number" class="form-control" name="phone" placeholder="전화번호를 입력해주세요" required >
+										<div class="invalid-feedback">Phone is required</div>
+									</div>
+									
+									<!-- 회원아이콘 -->
+									<div class="mb-3">
+										<label class="mb-2 text-muted" for="userIcon">회원아이콘</label>
+										<input id="userIcon" type="text" class="form-control" name="userIcon" placeholder="회원아이콘 입력해주세요." required >
+										<div class="invalid-feedback">UserIcon is required</div>
+									</div>
+									
+									<!-- 성별 -->
+									<div class="mb-3">
+										<label class="mb-2 text-muted" for="gender">성별</label>
+										남자 <input id="gender1" type="radio" name="gender" value="남자" required >
+										여자 <input id="gender2" type="radio" name="gender" value="여자" required >
+										<div class="invalid-feedback">Gender is required</div>
+									</div>
+									
+									<p class="form-text text-muted mb-3">등록하기 전에 정보를 확인해주세요.</p>
+                                        <input type="checkbox">확인하였습니다.
+									<div class="align-items-center d-flex">
+										<button type="submit" class="btn btn-primary ms-auto">회원가입</button>
+									</div>
+								</form>
+							</div>
+							<div class="card-footer py-3 border-0">
+								<div class="text-center">
+									이미 계정이 있으신가요? 
+									<a href="index.html" class="text-dark">로그인하러 가기</a>
+								</div>
+							</div>
+						</div>
+						<div class="text-center mt-5 text-muted"></div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</th:block>
+	<!-- 콘텐츠 끝 -->
+	
+	<th:block layout:fragment="add-script">
+	<!-- 유효성 검사 -->
+	<script>
+
+function fn_emailCheck(){
+	$.ajax({
+		url : "/account/emailCheck.do",
+		type : "POST",
+		dataType : "JSON",
+		data : {"email" : $("#email").val()},
+		success : function (data) {
+			if(data == 1){
+				alert("중복된 이메일입니다.")
+			} else if(data == 0){
+				$("#emailCheck").attr("value", "Y");
+				alert("사용 가능한 이메일입니다.")
+			}
+		}
+	})
+}	
+
+function fn_nickCheck(){
+    $.ajax({
+        url : "/account/nickCheck.do",
+        type : "POST",
+        dataType : "JSON",
+        data : {"nickname" : $("#nickname").val()},
+        success : function (data) {
+            if(data == 1){
+                alert("중복된 닉네임입니다.")
+            } else if(data == 0){
+                $("#nickCheck").attr("value", "Y");
+                alert("사용 가능한 닉네임입니다.")
+            }
+        }
+    })
+}
+		
+	
+	
+function checkEmail(){
+
+let exptext = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
+
+let email = document.getElementById('email').value;
+
+if (email == '' || !exptext.test(email)) {
+alert("올바른 이메일 주소를 입력하세요")
+return false;
+}
+}
+
+        function checkPassword(){
+ 
+            let pw = document.getElementById('password').value;    
+            let num = pw.search(/[0-9]/g);
+            let eng = pw.search(/[a-z]/ig);
+            
+            if(pw.length < 8 || pw.length>16){
+                window.alert('비밀번호는 8자 ~ 16자리 이내로 입력주세요');
+                return false;
+            }else if(pw.search(/\s/)!= -1){
+                window.alert('비밀번호는 공백없이 입력해주세요');
+                return false;
+            }else if(num < 0 || eng < 0){
+                window.alert('영문, 숫자를 혼합하여 입력해주세요.')
+                return false;
+            }else{
+                console.log("통과");
+                return true;
+            }
+        }
+        
+        function comparePassword(){           
+                if(document.getElementById('password').value==document.getElementById('password2').value){
+                    alert("비밀번호가 일치합니다.")
+                }
+                else{
+                	alert("비밀번호가 일치하지 않습니다.")
+                }0
+            }
+        
+    </script>
+</th:block>
+</body>
+</html>

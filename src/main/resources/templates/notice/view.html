@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="common/layout/defaultLayout">
+
+<!--  
+ * 공지사항 상세 화면
+ * 2021. 12. 17.
+ * Jenny (devje@naver.com)
+ -->
+
+<!-- 타이틀 -->
+<th:block layout:fragment="title">
+	<title>공지사항</title>
+</th:block>
+
+<body>
+	<th:block layout:fragment="content">
+		<div class="card-content container">
+
+
+			<form class="form-horizontal form-view" th:object="${notice}">
+				<!-- 공지사항 제목 -->
+				<div class="row mb-3">
+					<label for="title" class="col-sm-2 col-form-label viewSubject"><h3>
+							<b>공지사항</b>
+						</h3></label>
+				</div>
+
+				<!-- 제목 -->
+				<div class="row mb-3">
+					<label for="title" class="col-sm-2 col-form-label viewSubject"><b>제목</b></label>
+					<div class="col-sm-10">
+						<span class="form-control" th:text="*{title}"></p>
+					</div>
+				</div>
+
+				<!-- 작성자 -->
+				<div class="row mb-3">
+					<label for="admin" class="col-sm-2 col-form-label viewSubject"><b>작성자</b></label>
+					<div class="col-sm-10">
+						<p class="form-control">관리자</p>
+					</div>
+				</div>
+
+
+				<div class="row">
+					<!-- 등록일 -->
+					<div class="col">
+						<label for="writeDate" class="col-sm-2 control-label"><b>등록일</b></label>
+						<p class="form-control" th:text="*{#dates.format( writeDate, 'yyyy-MM-dd' )}"></p>
+					</div>
+
+					<!-- 조회수 -->
+					<div class="col">
+						<label for="vuewCount" class="col-sm-2 control-label"><b>조회 수</b></label>
+						<p class="form-control" th:text="*{viewCount}"></p>
+					</div>
+				</div>
+
+				<!-- 공지사항 내용 -->
+				<div class="form-group">
+					<label for="content" class="col-sm-12 control-label "><b>내용</b></label>
+					<div class="col-sm-12 ">
+						<p class="form-control boardViewContent" th:text="*{content}"></p>
+					</div>
+				</div>
+			</form>
+
+			<!-- 버튼 모음 시작 -->
+			<div class="btn_wrap text-center">
+				<!-- 뒤로가기 버튼 -->
+				<a th:href="@{list.do}" class="btn btn-success waves-effect waves-light">뒤로가기</a>
+				<!-- 수정하기 버튼 -->
+				<a th:href="@{write.do( boardNo=${notice.boardNo} )}" th:if="${session.loginMember != null &&  session.loginMember.userNo == notice.userNo}" class="btn btn-primary waves-effect waves-light">수정하기</a>
+				<!-- 삭제하기 버튼 -->
+				<button type="button" class="btn btn-danger waves-effect waves-light" th:if="${session.loginMember != null &&  session.loginMember.userNo == notice.userNo}" th:onclick="deleteNotice([[ ${notice.boardNo} ]])">삭제하기</button>
+			</div>
+			<!-- 버튼 모음 끝 -->
+			<br>
+		</div>
+	</th:block>
+
+
+
+	<!-- 삭제 영역 스크립트 -->
+	<th:block layout:fragment="script">
+		<script th:inline="javascript">
+			/*<![CDATA[*/
+
+			function deleteNotice(boardNo) {
+				
+				if (confirm(boardNo + "번 게시글을 삭제할까요?")) {
+					var uri = /*[[ @{delete.do} ]]*/null;
+					var html = "";
+
+					html += '<form name="dataForm" action="'+uri+'" method="post">';
+					html += '<input type="hidden" name="boardNo" value="'+boardNo+'" />';
+					html += '</form>';
+
+					$("body").append(html);
+					document.dataForm.submit();
+				}
+			}
+			/*[- end of function -]*/
+
+			/*]]>*/
+		</script>
+	</th:block>
+</body>
+</html>

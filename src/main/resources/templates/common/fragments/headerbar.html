@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<!-- 로고, 상단 바-->
+<header th:fragment="headerbar" class="navbar navbar-expand-lg navbar-light bg-light">
+	<div class="container px-4 px-lg-5">
+		<a class="navbar-brand text-success fs-1 fw-bold" th:href="@{/index.do}">오이마켓</a>
+
+		<div class="d-flex">
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div th:if="${session.loginMember == null}" class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+					<li class="nav-item"><a class="nav-link" href="#!"> 종 </a></li>
+					<li class="nav-item"><a class="nav-link active" aria-current="page" href="#" th:href="@{/account/login.do}">로그인</a></li>
+					<li class="nav-item"><a class="nav-link" href="#" th:href="@{/account/join.do}">회원가입</a></li>
+				</ul>
+			</div>
+			<div th:unless="${session.loginMember == null}" class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+					<li class="nav-item"><a class="nav-link" href="#!"> 종 </a></li>
+					<li class="nav-item"><a class="nav-link active" aria-current="page" th:href="@{/logout}">로그아웃</a></li>
+					<li class="nav-item"><a class="nav-link" href="#" th:href="@{/account/join.do}">마이페이지</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</header>
+
+</html>

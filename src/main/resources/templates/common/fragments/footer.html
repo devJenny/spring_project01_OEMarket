@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+  <!--  
+ * footer
+ * 2021. 12. 16.
+ * Jenny (devje@naver.com)
+ -->
+
+  <footer class="py-5 bg-dark" th:fragment="footer">
+    <div class="container">
+      <p class="m-0 text-center text-white">
+        대표 번호: 070-1234-1234 / 대표 메일: customer@oemarket.com /
+        <a
+          href="#"
+          class="m-0 text-center text-white"
+          th:href="@{/notice/list.do}"
+          >공지사항</a
+        >
+        <!-- 관리자 페이지 미구현 -->
+        <a href="#" class="m-0 text-center text-white">관리자</a>
+      </p>
+      <p class="m-0 text-center text-white">Copyright &copy; OE MARKET 2021</p>
+    </div>
+  </footer>
+</html>

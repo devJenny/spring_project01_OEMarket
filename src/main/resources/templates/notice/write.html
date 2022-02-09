@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="common/layout/defaultLayout">
+
+<!--  
+ * 공지사항 글쓰기
+ * 2021. 12. 17.
+ * Jenny (devje@naver.com)
+ -->
+
+<!-- 타이틀 -->
+<th:block layout:fragment="title">
+	<title>공지사항 글쓰기</title>
+</th:block>
+
+<body>
+	<th:block layout:fragment="content">
+		<div class="card-content container">
+			<form class="form-horizontal" th:action="@{/notice/register.do}" th:object="${notice}" method="post" onsubmit="return registerNotice(this)">
+
+				<div class="row mb-3">
+					<label for="title" class="col-sm-2 col-form-label viewSubject"><h3>
+							<b>공지사항 등록</b>
+						</h3></label>
+				</div>
+
+
+				<!-- 게시판 번호 -->
+				<input type="hidden" th:if="*{boardNo != null and boardNo > 0}" th:field="*{boardNo}" />
+
+				<!-- 제목 -->
+
+				<div class="row mb-3">
+					<label for="title" class="col-sm-2 col-form-label viewSubject"><b>제목</b></label>
+					<div class="col-sm-10">
+						<input type="text" th:field="*{title}" class="form-control" placeholder="제목을 입력해 주세요." />
+					</div>
+				</div>
+
+
+
+
+				<!-- 작성자 관리자로 고정 -->
+				<div class="form-group">
+					<label for="userNo" class="col-sm-2 control-label"></label>
+					<div class="col-sm-10">
+						<!--<input type="text" th:field="*{userNo}" class="form-control" placeholder="작성자를 입력해 주세요." /> -->
+						<input type="hidden" id="userNo" name="userNo" th:value="${session.loginMember.userNo}" />
+					</div>
+				</div>
+
+				<!-- 내용 작성 -->
+
+				<div class="row mb-3">
+					<label for="content" class="col-sm-2 col-form-label viewSubject"><b>내용</b></label>
+					<div class="col-sm-10">
+						<textarea th:field="*{content}" class="form-control" placeholder="내용을 입력해 주세요."></textarea>
+					</div>
+				</div>
+
+
+				<!-- 버튼 모음 시작 -->
+				<div class="btn_wrap text-center" th:unless="${session.loginMember == null}">
+					<!-- 뒤로가기 버튼 -->
+					<a th:href="@{list.do}" class="btn btn-success waves-effect waves-light">뒤로가기</a>
+					<!-- 저장하기 버튼 -->
+					<button type="submit" class="btn btn-primary waves-effect waves-light">저장하기</button>
+				</div>
+				<!-- 버튼 모음 끝 -->
+				<br>
+			</form>
+		</div>
+	</th:block>
+
+	<th:block layout:fragment="add-script">
+		<script th:inline="javascript">
+			/*<![CDATA[*/
+
+			function registerNotice(form) {
+
+				var result = (isValid(form.title, "상품명", null, null)
+						&& isValid(form.userNo, "작성자", null, null) && isValid(
+						form.content, "내용", null, null));
+
+				if (result == false) {
+					return false;
+				}
+			}
+			/*[- end of function -]*/
+
+			/*]]>*/
+		</script>
+	</th:block>
+</body>
+</html>

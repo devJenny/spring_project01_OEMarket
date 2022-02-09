@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.OEMarket.mapper.CommentMapper">
+	<sql id="commentColumns">
+		"comment_no", 
+		"board_no", 
+		"user_no", 
+		"secret_yn", 
+		"content", 
+		"parent", 
+		"depth", 
+		"write_date", 
+		"modifier", 
+		"modify_date", 
+		"delete_yn"
+	</sql>
+	
+	<!-- selectCommentList를 위한 columns -->
+	<!-- LPAD function은 데이터 왼쪽에 지정된 문자(?)를 추가해줌. 의도한 역할은 계층형 구조를 나타내기 위함. -->
+	<sql id="commentViewColumns">
+		c."comment_no", 
+		c."board_no", 
+		c."user_no", 
+		m."nickname", 
+		c."secret_yn", 
+		LPAD('ㄴ', 4*(c."depth" - 1)) || c."content" AS "content", 
+		c."parent", 
+		c."depth", 
+		c."write_date", 
+		c."modifier", 
+		c."modify_date", 
+		c."delete_yn"
+	</sql>
+	
+	<resultMap type="CommentDTO" id="commentMap">
+		<id column="comment_no" property="commentNo"/>
+		<result column="board_no" property="boardNo"/>
+		<result column="user_no" property="userNo"/>
+		<result column="secret_yn" property="secretYn"/>
+		<result column="content" property="content"/>
+		<result column="parent" property="parent"/>
+		<result column="depth" property="depth"/>
+		<result column="delete_yn" property="deleteYn"/>
+		<result column="write_date" property="writeDate"/>
+		
+		<association javaType="MemberDTO" property="memberDTO">
+			<id column="user_no" property="userNo"/>
+			<result column="email" property="email"/>
+			<result column="name" property="name"/>
+			<result column="nickname" property="nickname"/>
+			<result column="member_role" property="memberRole"/>
+		</association>
+	</resultMap>
+	
+	<insert id="insertComment" parameterType="CommentDTO">
+		INSERT INTO	"COMMENT" (
+			<include refid="commentColumns" />
+		)
+		VALUES(
+			comment_no_seq.nextval, 
+			#{boardNo}, 
+			#{userNo}, 
+			NVL(#{secretYn}, 'N'),
+			#{content}, 
+			NULL,  
+			1, 
+			SYSDATE, 
+			NULL, 
+			NULL, 
+			'N'
+		)
+	</insert>
+	
+	<insert id="insertReplyComment" parameterType="CommentDTO">
+		INSERT INTO "COMMENT" (
+			<include refid="commentColumns" />
+		) VALUES(
+			comment_no_seq.nextval, 
+			#{boardNo}, 
+			#{userNo}, 
+			NVL(#{secretYn}, 'N'), 
+			#{content},
+			#{parent}, 
+			#{depth}, 
+			SYSDATE, 
+			NULL,
+			NULL, 
+			'N'
+		)
+	</insert>
+	
+	<select id="selectCommentDetail" resultType="CommentDTO" parameterType="long">
+		SELECT
+			<include refid="commentColumns" />
+		FROM
+			"COMMENT"
+		WHERE
+			"comment_no" = #{commentNo}
+		AND
+			"delete_yn" = 'N'
+	</select>
+
+	<update id="updateComment" parameterType="CommentDTO">
+		UPDATE
+			"COMMENT"
+		SET
+			"modify_date" = SYSDATE, 
+			"content" = #{content}, 
+			"modifier" = #{modifier}
+		WHERE
+			"comment_no" = #{commentNo}
+	</update>
+	
+	<update id="deleteComment" parameterType="long">
+		UPDATE
+			"COMMENT"
+		SET
+			"delete_yn" = 'Y', 
+			"modify_date" = SYSDATE, 
+			"modifier" = #{modifier}
+		WHERE
+			"comment_no" = #{commentNo}
+			
+	</update>
+
+	<!-- 입력된 게시글의 댓글을 불러오는 쿼리 삭제되지 않았거나(delete_yn = 'N') 
+	삭제되었다면(delete_yn = 'Y') 자기자신(comment_no)을 부모(parent)로 참조하는 댓글이 없다면 출력하지 않고 
+	참조하는 댓글이 있다면 출력함. -->
+	<select id="selectCommentList" resultMap="commentMap" parameterType="CommentDTO">
+		SELECT
+			<include refid="commentViewColumns"/>
+		FROM "COMMENT" c
+		LEFT JOIN "MEMBER" M
+		ON c."user_no" = m."user_no"
+		WHERE "board_no" = #{boardNo}
+		AND "delete_yn" = 'N'
+		OR (
+			"board_no" = #{boardNo}
+			AND
+				"delete_yn" = 'Y'
+			AND 
+				"comment_no" 
+			IN 
+				(SELECT "parent" FROM "COMMENT")
+			)
+		START WITH
+			"depth" = 1
+		CONNECT BY PRIOR
+			"comment_no" = "parent"
+	</select>
+	
+	<select id="selectCommentTotalCount" resultType="int" parameterType="CommentDTO">
+		SELECT
+			COUNT(*)
+		FROM
+			"COMMENT"
+		WHERE
+			"delete_yn" = 'N'
+		AND
+			"board_no" = #{boardNo}
+	</select>
+	
+</mapper>

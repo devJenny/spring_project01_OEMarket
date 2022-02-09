@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--  
+ * 게시물 신고
+ * 2021. 12. 18.
+ * Jenny (secrethappy@naver.com)
+ -->
+
+<mapper namespace="com.OEMarket.mapper.BoardReportedMapper">
+
+	<sql id="boardReportedColumns">
+		"reported_no" <!-- 신고 번호 -->
+		, "board_no" <!-- 게시글 번호 -->
+		, "comment_no" <!-- 댓글 번호 -->
+		, "user_no" <!-- 신고자 -->
+		, "write_date" <!-- 등록일 -->
+		, "content" <!-- 신고 내용 -->
+	</sql>
+
+	<insert id="insertBoardReported" parameterType="ReportedDTO">
+		INSERT INTO REPORTED (
+		<include refid="boardReportedColumns" />
+		) VALUES (
+		reported_no_seq.nextval
+		, #{boardNo}
+		, null
+		, #{userNo}
+		,
+		sysdate
+		, #{content}
+		)
+	</insert>
+
+	<select id="selectBoardReportedDetail" parameterType="long"
+		resultType="ReportedDTO">
+		SELECT
+		<include refid="boardReportedColumns" />
+		FROM
+		Reported
+		WHERE
+
+		"reported_no" = #{reportedNo}
+	</select>
+
+	<select id="selectBoardReportedList" parameterType="ReportedDTO"
+		resultType="ReportedDTO">
+		SELECT
+		<include refid="boardReportedColumns" />
+		FROM
+		REPORTED
+		WHERE
+		"reported_no" = #{reportedNo}
+		ORDER BY
+		"reported_no"
+		DESC,
+	</select>
+
+	<select id="selectBoardReportedTotalCount"
+		parameterType="ReportedDTO" resultType="int">
+		SELECT
+		COUNT(*)
+		FROM
+		Reported
+		WHERE
+		"reported_no" = #{reportedNo}
+
+	</select>
+
+</mapper>

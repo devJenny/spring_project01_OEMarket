@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html
+  lang="ko"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+>
+  <!--  
+ * header
+ * 2021. 12. 16.
+ * Jenny (devje@naver.com)
+ -->
+
+  <head th:fragment="header">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=no"
+    />
+
+    <meta name="description" content="스프링 프로젝트" />
+    <meta name="author" content="" />
+
+    <!-- 타이틀 -->
+    <th:block layout:fragment="title"></th:block>
+
+    <!-- css -->
+    <link rel="stylesheet" th:href="@{/css/customer.css}" />
+    <link rel="stylesheet" th:href="@{/css/newStyles.css}" />
+    <link rel="stylesheet" th:href="@{/css/newBootstrap.min.css}" />
+    <link
+      rel="stylesheet"
+      th:href="@{/plugin/mCustomScrollbar/jquery.mCustomScrollbar.min.css}"
+    />
+
+    <!-- 추가 css -->
+    <th:block layout:fragment="add-css"></th:block>
+
+    <!-- 폰트 -->
+    <style>
+      /*구글 웹 폰트 적용*/
+      @import url(//fonts.googleapis.com/earlyaccess/jejumyeongjo.css);
+
+      body {
+        font-family: "Jeju Myeongjo", serif; /*웹 폰트 지정*/
+        /*font-family: 'Jeju Gothic', sans-serif; 제주 고딕*/
+      }
+    </style>
+  </head>
+</html>

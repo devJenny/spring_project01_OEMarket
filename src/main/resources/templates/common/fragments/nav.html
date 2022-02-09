@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+  <!--  
+ * navigation : https://getbootstrap.com/docs/5.1/components/navs-tabs/
+ * 2021. 12. 16.
+ * Jenny (devje@naver.com)
+ -->
+
+  <nav th:fragment="nav">
+    <ul class="nav justify-content-center p-2 bg-success text-white">
+      <li class="nav-item">
+        <a
+          class="nav-link active text-white"
+          aria-current="page"
+          href="#"
+          th:href="@{/board/list.do}"
+          >디지털/가전</a
+        >
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white" href="#" th:href="@{/board/list.do}"
+          >패션/잡화</a
+        >
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white" href="#" th:href="@{/board/list.do}"
+          >스포츠</a
+        >
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white" href="#" th:href="@{/board/list.do}"
+          >뷰티/미용</a
+        >
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white" href="#" th:href="@{/board/list.do}"
+          >도서</a
+        >
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white" href="#" th:href="@{/board/list.do}"
+          >티켓</a
+        >
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white" href="#" th:href="@{/board/list.do}"
+          >가구/인테리어</a
+        >
+      </li>
+    </ul>
+    <br />
+  </nav>
+  <!-- 내비게이션 끝 -->
+</html>

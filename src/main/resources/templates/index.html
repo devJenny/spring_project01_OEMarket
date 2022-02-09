@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="common/layout/defaultLayout">
+
+<!--  
+ * 메인
+ * 2021. 12. 16.
+ * Jenny (devje@naver.com)
+ -->
+<!-- 타이틀 -->
+<th:block layout:fragment="title">
+	<title>오이마켓</title>
+</th:block>
+
+<body>
+	<th:block layout:fragment="content">
+
+		<!-- 캐러솔 2000*700 Crossfade : https://getbootstrap.com/docs/5.1/components/carousel/ -->
+		<div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
+			<div class="carousel-inner">
+				<div class="carousel-item active">
+					<img src="imgs/1.jpg" class="d-block w-100" alt="...">
+				</div>
+				<div class="carousel-item">
+					<img src="imgs/2.jpg" class="d-block w-100" alt="...">
+				</div>
+				<div class="carousel-item">
+					<img src="imgs/3.jpg" class="d-block w-100" alt="...">
+				</div>
+			</div>
+			<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+				<span class="carousel-control-prev-icon" aria-hidden="true"></span> <span class="visually-hidden">Previous</span>
+			</button>
+			<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
+				<span class="carousel-control-next-icon" aria-hidden="true"></span> <span class="visually-hidden">Next</span>
+			</button>
+		</div>
+
+		<!-- 검색 -->
+		<br>
+		<div class="mx-auto" style="width: 500px;">
+			<div class="container-fluid">
+				<form class="d-flex">
+
+					<input class="form-control me-2" type="search" placeholder="검색하세요" aria-label="Search">
+					<button class="btn btn-outline-success" type="submit">Search</button>
+				</form>
+			</div>
+		</div>
+
+
+		<!-- 섹션-->
+		<section class="py-5">
+			<div class="container px-4 px-lg-5 mt-5">
+				<h2>최근 올라온 중고 상품</h2>
+				<br>
+				<div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+					<div class="col mb-5">
+						<div class="card h-100">
+							<!-- 고객이 입력한 정보 가져와야 함 -->
+							<!-- 하드 코딩 영역 -->
+							<!-- 제품 사진 -->
+							<a class="btn  mt-auto" href="#">
+								<img class="card-img-top" src="imgs/listImgs/33.jpg" alt="..." height="250px" />
+							</a>
+							<!-- Product details-->
+							<div class="card-body p-4">
+								<div class="text-center">
+									<!-- 제품 설명-->
+									<h5 class="fw-bolder">카메라 팔아요</h5>
+									<!-- Product price-->
+									500,000원
+									<p>10분 전</p>
+								</div>
+							</div>
+
+						</div>
+					</div>
+					<div class="col mb-5">
+						<div class="card h-100">
+							<!-- Product image-->
+							<img class="card-img-top" src="imgs/listImgs/32.jpg" alt="..." height="250px" />
+							<!-- Product details-->
+							<div class="card-body p-4">
+								<div class="text-center">
+									<!-- Product name-->
+									<h5 class="fw-bolder">갤럭시 노트 팔아요</h5>
+									<!-- Product reviews-->
+									<div class="d-flex justify-content-center small text-warning mb-2">
+										<div class="bi-star-fill"></div>
+										<div class="bi-star-fill"></div>
+										<div class="bi-star-fill"></div>
+										<div class="bi-star-fill"></div>
+										<div class="bi-star-fill"></div>
+									</div>
+									<!-- Product price-->
+									300,000원
+									<p>15분 전</p>
+								</div>
+							</div>
+
+						</div>
+					</div>
+					<div class="col mb-5">
+						<div class="card h-100">
+
+							<!-- Product image-->
+							<img class="card-img-top" src="imgs/listImgs/31.jpg" alt="..." height="250px" />
+							<!-- Product details-->
+							<div class="card-body p-4">
+								<div class="text-center">
+									<!-- Product name-->
+									<h5 class="fw-bolder">가방 팔아요</h5>
+									<!-- Product reviews-->
+									<div class="d-flex justify-content-center small text-warning mb-2">
+										<div class="bi-star-fill"></div>
+										<div class="bi-star-fill"></div>
+										<div class="bi-star-fill"></div>
+										<div class="bi-star-fill"></div>
+										<div class="bi-star-fill"></div>
+									</div>
+									<!-- Product price-->
+									5,000원
+									<p>30분 전</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col mb-5">
+						<div class="card h-100">
+							<!-- Product image-->
+							<img class="card-img-top" src="imgs/listImgs/30.jpg" alt="..." height="250px" />
+							<!-- Product details-->
+							<div class="card-body p-4">
+								<div class="text-center">
+									<!-- Product name-->
+									<h5 class="fw-bolder">수영복 팔아요</h5>
+									<!-- Product reviews-->
+									<div class="d-flex justify-content-center small text-warning mb-2">
+										<div class="bi-star-fill"></div>
+										<div class="bi-star-fill"></div>
+										<div class="bi-star-fill"></div>
+										<div class="bi-star-fill"></div>
+										<div class="bi-star-fill"></div>
+									</div>
+									<!-- Product price-->
+									10,000원
+									<p>45분 전</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col mb-5">
+						<div class="card h-100">
+							<!-- Product image-->
+							<img class="card-img-top" src="imgs/listImgs/29.jpg" alt="..." height="250px" />
+							<!-- Product details-->
+							<div class="card-body p-4">
+								<div class="text-center">
+									<!-- Product name-->
+									<h5 class="fw-bolder">이것이 자바다 책 팔아요</h5>
+									<!-- Product reviews-->
+									<div class="d-flex justify-content-center small text-warning mb-2">
+										<div class="bi-star-fill"></div>
+										<div class="bi-star-fill"></div>
+										<div class="bi-star-fill"></div>
+										<div class="bi-star-fill"></div>
+										<div class="bi-star-fill"></div>
+									</div>
+									<!-- Product price-->
+									15,000원
+									<p>50분 전</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col mb-5">
+						<div class="card h-100">
+							<!-- Product image-->
+							<img class="card-img-top" src="imgs/listImgs/28.jpg" alt="..." height="250px" />
+							<!-- Product details-->
+							<div class="card-body p-4">
+								<div class="text-center">
+									<!-- Product name-->
+									<h5 class="fw-bolder">데미안 책 팝니다!</h5>
+									<!-- Product reviews-->
+									<div class="d-flex justify-content-center small text-warning mb-2">
+										<div class="bi-star-fill"></div>
+										<div class="bi-star-fill"></div>
+										<div class="bi-star-fill"></div>
+										<div class="bi-star-fill"></div>
+										<div class="bi-star-fill"></div>
+									</div>
+									<!-- Product price-->
+									5,000원
+									<p>1시간 전</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="col mb-5">
+						<div class="card h-100">
+							<!-- Product image-->
+							<img class="card-img-top" src="imgs/listImgs/27.jpg" alt="..." height="250px" />
+							<!-- Product details-->
+							<div class="card-body p-4">
+								<div class="text-center">
+									<!-- Product name-->
+									<h5 class="fw-bolder">아이패드 팔아요</h5>
+									<!-- Product reviews-->
+									<div class="d-flex justify-content-center small text-warning mb-2">
+										<div class="bi-star-fill"></div>
+										<div class="bi-star-fill"></div>
+										<div class="bi-star-fill"></div>
+										<div class="bi-star-fill"></div>
+										<div class="bi-star-fill"></div>
+									</div>
+									<!-- Product price-->
+									700,000원
+									<p>2시간 전</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col mb-5">
+						<div class="card h-100">
+							<!-- Product image-->
+							<img class="card-img-top" src="imgs/listImgs/26.jpg" alt="..." height="250px" />
+							<!-- Product details-->
+							<div class="card-body p-4">
+								<div class="text-center">
+									<!-- Product name-->
+									<h5 class="fw-bolder">이불 팔아요</h5>
+									<!-- Product reviews-->
+									<div class="d-flex justify-content-center small text-warning mb-2">
+										<div class="bi-star-fill"></div>
+										<div class="bi-star-fill"></div>
+										<div class="bi-star-fill"></div>
+										<div class="bi-star-fill"></div>
+										<div class="bi-star-fill"></div>
+									</div>
+									<!-- Product price-->
+									7,000원
+									<p>3시간 전</p>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</section>
+	</th:block>
+</body>
+</html>

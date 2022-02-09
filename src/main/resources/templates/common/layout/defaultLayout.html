@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html
+  lang="ko"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:th="http://www.thymeleaf.org"
+>
+  <!--  
+ * layout
+ * 2021. 12. 16.
+ * Jenny (devje@naver.com)
+ -->
+
+  <head th:replace="common/fragments/header :: header"> </head>
+
+  <body>
+    <!-- 공통 headerbar -->
+    <header th:replace="common/fragments/headerbar :: headerbar" />
+
+    <!-- 공통 navigaion -->
+    <nav th:replace="common/fragments/nav :: nav" />
+
+    <!-- 검색 -->
+    <th:block layout:fragment="search"></th:block>
+
+    <!-- 댓글 수정/삭제 -->
+    <th:block layout:fragment="modal"></th:block>
+
+    <!-- 페이지 콘텐츠 구성 -->
+    <th:block layout:fragment="content"></th:block>
+
+    <!-- 페이징 처리 -->
+    <th:block layout:fragment="paging"></th:block>
+
+    <!-- 추가 콘텐츠 -->
+    <th:block layout:fragment="add-content"></th:block>
+
+    <!-- 공통 footer -->
+    <footer th:replace="common/fragments/footer :: footer" />
+
+    <!-- script -->
+    <div th:replace="common/fragments/script :: script" />
+
+    <!-- 추가 script -->
+    <th:block layout:fragment="add-script"></th:block>
+  </body>
+</html>

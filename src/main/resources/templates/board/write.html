@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="common/layout/defaultLayout">
+
+<!--  
+ * 상품 판매 글쓰기
+ * 2021. 12. 15.
+ * Jenny (devje@naver.com)
+ -->
+
+<!-- 타이틀 -->
+<th:block layout:fragment="title">
+	<title>글쓰기</title>
+</th:block>
+
+
+<body>
+	<th:block layout:fragment="content">
+		<!-- 콘텐츠 시작 -->
+		<div class="card-content container">
+		<div class="row mb-3">
+		<label for="title" class="col-sm-2 col-form-label viewSubject"><h3><b>상품 등록</b></h3></label>
+		</div>
+			<form class="form-horizontal" th:action="@{/board/register.do}" th:object="${board}" method="post" onsubmit="return registerBoard(this)">
+
+				<!-- 게시판 번호 -->
+				<input type="hidden" th:if="*{boardNo != null and boardNo > 0}" th:field="*{boardNo}" />
+
+				<!-- 카테고리 선택-->
+				<div class="row mb-3">
+					<label for="title" class="col-sm-2 col-form-label viewSubject"><b>카테고리</b></label>
+					<div class="col-sm-10">
+						<select th:field="*{categoryNo}" name="categoryNo" class="form-control">
+							<option for="categoryNo" value="">카테고리 선택</option>
+							<option value="21">디지털/가전</option>
+							<option value="22">패션/잡화</option>
+							<option value="23">스포츠</option>
+							<option value="24">뷰티/미용</option>
+							<option value="25">도서</option>
+							<option value="26">티켓</option>
+							<option value="27">가구/인테리어</option>
+						</select>
+					</div>
+				</div>
+
+				<!-- 상품명 입력 -->
+				<div class="row mb-3">
+					<label for="title" class="col-sm-2 col-form-label viewSubject"><b>상품명</b></label>
+					<div class="col-sm-10">
+						<input type="text" th:field="*{title}" class="form-control" placeholder="상품명을 입력해 주세요." />
+					</div>
+				</div>
+
+				<!-- 상품 가격 입력 -->
+				<div class="row mb-3">
+					<label for="price" class="col-sm-2 col-form-label viewSubject"><b>상품 가격</b></label>
+					<div class="col-sm-10">
+						<input type="text" th:field="*{price}" class="form-control" placeholder="가격을 입력해 주세요."  />
+					</div>
+				</div>
+
+
+				<!-- 작성자 -->
+				<div class="form-group">
+					<input type="hidden" for="userNo" class="col-sm-2 control-label"></input>
+					<div class="col-sm-10">
+						<input type="hidden" id="userNo" name="userNo" th:value="${session.loginMember.userNo}" />
+					</div>
+				</div>
+
+				<!-- 내용 입력 -->
+				<div class="row mb-3">
+					<label for="content" class="col-sm-2 col-form-label viewSubject"><b>내용</b></label>
+					<div class="col-sm-10">
+						<textarea th:field="*{content}" class="form-control" placeholder="내용을 입력해 주세요."></textarea>
+					</div>
+				</div>
+
+
+
+				<!--  버튼 모음 시작 -->
+				<div class="btn_wrap text-center" th:unless="${session.loginMember == null}">
+					<!-- 뒤로가기 버튼 -->
+					<a th:href="@{list.do}" class="btn btn-default waves-effect waves-light">뒤로가기</a>
+					<!-- 저장하기 버튼 -->
+					<button type="submit" class="btn btn-primary waves-effect waves-light">저장하기</button>
+				</div>
+				<!--  버튼 모음 끝 -->
+			</form>
+			<br>
+		</div>
+		<!-- 콘텐츠 끝 -->
+	</th:block>
+
+	<th:block layout:fragment="add-script">
+		<script th:inline="javascript">
+			/*<![CDATA[*/
+
+			function registerBoard(form) {
+				var result = (isValid(form.categoryNo, "카테고리", null, null)
+						&& isValid(form.title, "상품명", null, null)
+						&& isValid(form.price, "상품가격", null, null)
+						&& isValid(form.userNo, "작성자", null, null) && isValid(
+						form.content, "내용", null, null));
+
+				if (result == false) {
+					return false;
+				}
+			}
+			
+
+			
+			
+			
+			/*[- end of function -]*/
+
+			/*]]>*/
+		</script>
+	</th:block>
+
+</body>
+</html>

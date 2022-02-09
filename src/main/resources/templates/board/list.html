@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="common/layout/defaultLayout">
+
+<!--  
+ * 게시판 목록
+ * 2021. 12. 16.
+ * Jenny (devje@naver.com)
+ -->
+
+<!-- 타이틀 -->
+<th:block layout:fragment="title">
+	<title>상품 판매 게시판 목록</title>
+</th:block>
+
+<body>
+
+	<!-- 검색 영역
+<th:block layout:fragment="search">
+	<form action="#" id="searchform-header" class="searchform js__toggle active pull-right">
+		<input type="search" placeholder="Search..." class="input-search">
+		<button class="mdi mdi-magnify button-search" type="submit">
+			<i class="fa fa-search" aria-hidden="true"></i>
+		</button>
+	</form>
+</th:block>  -->
+
+
+	<th:block layout:fragment="content">
+
+		<!-- 캐러솔 시작 -->
+		<div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+			<div class="carousel-inner">
+				<div class="carousel-item active">
+					<img src="/imgs/디지털가전.jpg" class="d-block w-100" alt="...">
+					<div class="carousel-caption d-none d-md-block">
+						<h5>중고 거래는 오이마켓</h5>
+						<br> <br>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 캐러솔 끝 -->
+
+		<!-- 콘텐츠 시작 -->
+		<section class="py-5 container">
+			<div class="container px-4 px-lg-5 mt-5">
+				<h2>최근 올라온 중고 상품</h2>
+				<br>
+				<!-- 상품 상세 목록 부분 -->
+				<div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+					<div class="col mb-5" th:if="${not #lists.isEmpty( boardList )}" th:each="row : ${boardList}">
+						<div class="card h-100">
+							<!-- 상품 이미지 -->
+							<img class="card-img-top" th:src="${row.saveName}" alt="..." height="250px" />
+							<!-- 상품 상세 -->
+							<div class="card-body p-4">
+								<div class="text-center">
+									<!-- 상품 이름 -->
+									<div th:text="${boardNo}"></div>
+									<h5 class="fw-bolder">
+										<a class="boardListCss" th:href="@{view.do( boardNo=${row.boardNo} )}" th:text="${row.title}"></a>
+									</h5>
+									<!-- 상품 가격 -->
+									<td th:text="${#numbers.formatInteger(row.price, 0, 'COMMA') }+'원'"></td>
+								</div>
+							</div>
+							<!-- 카드 푸터 -->
+							<div class="card-footer p-4 pt-0 border-top-0 bg-transparent"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- 글쓰기 버튼 -->
+			<div class="d-grid gap-2 d-lg-flex justify-content-lg-end" th:unless="${session.loginMember == null}">
+				<a th:href="@{write.do}" class="btn btn-success waves-effect waves-right">글쓰기</a>
+			</div>
+			
+		</section>
+		<!-- 콘텐츠 끝 -->
+
+		<!-- 페이징 처리 시작 -->
+		<th:block layout:fragment="paging">
+			<nav th:replace="common/fragments/pagination :: pagination" aria-label="Page navigation example">
+			</nav>
+		</th:block>
+		<!-- 페이징 처리 끝 -->
+	</th:block>
+	
+	<th:block layout:fragment="add-script">
+		<script th:inline="javascript">
+			/*<![CDATA[*/
+
+			function movePage(uri, queryString) {
+				location.href = uri + queryString;
+			}
+
+			/*]]>*/
+		</script>
+	</th:block>
+</body>
+</html>
